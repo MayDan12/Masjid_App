@@ -87,8 +87,8 @@ interface Theme {
 const lightTheme: Theme = {
   background: "#f8fafc",
   surface: "#ffffff",
-  primary: "#6366f1",
-  secondary: "#8b5cf6",
+  primary: "#2C9544",
+  secondary: "#0BA02E",
   text: "#1e293b",
   textSecondary: "#64748b",
   border: "#e2e8f0",
@@ -100,8 +100,8 @@ const lightTheme: Theme = {
 const darkTheme: Theme = {
   background: "#0f172a",
   surface: "#1e293b",
-  primary: "#818cf8",
-  secondary: "#a78bfa",
+  primary: "#2C9544",
+  secondary: "#0BA02E",
   text: "#f1f5f9",
   textSecondary: "#94a3b8",
   border: "#334155",
@@ -524,19 +524,8 @@ export default function EnhancedLogin() {
                   >
                     <Ionicons name="logo-google" size={24} color="#4285f4" />
                   </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[
-                      styles.socialButton,
-                      {
-                        backgroundColor: theme.surface,
-                        borderColor: theme.border,
-                      },
-                    ]}
-                    activeOpacity={0.8}
-                  >
-                    <Ionicons name="logo-apple" size={24} color={theme.text} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
+
+                  {/* <TouchableOpacity
                     style={[
                       styles.socialButton,
                       {
@@ -547,7 +536,7 @@ export default function EnhancedLogin() {
                     activeOpacity={0.8}
                   >
                     <Ionicons name="logo-facebook" size={24} color="#1877f2" />
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </View>
               </View>
 
@@ -756,7 +745,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     gap: 16,
-    marginBottom: 32,
+    marginBottom: 12,
   },
   socialButton: {
     width: 56,

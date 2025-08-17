@@ -33,7 +33,12 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <AuthProvider>
-        <Slot />
+        <Slot
+          screenOptions={{
+            animation: "slide_from_right",
+            gestureEnabled: true,
+          }}
+        />
       </AuthProvider>
     </ThemeProvider>
   );

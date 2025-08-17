@@ -41,8 +41,8 @@ interface Theme {
 const lightTheme: Theme = {
   background: "#f8fafc",
   surface: "#ffffff",
-  primary: "#6366f1",
-  secondary: "#8b5cf6",
+  primary: "#2C9544",
+  secondary: "#0BA02E",
   text: "#1e293b",
   textSecondary: "#64748b",
   border: "#e2e8f0",
@@ -56,8 +56,8 @@ const lightTheme: Theme = {
 const darkTheme: Theme = {
   background: "#0f172a",
   surface: "#1e293b",
-  primary: "#818cf8",
-  secondary: "#a78bfa",
+  primary: "#2C9544",
+  secondary: "#0BA02E",
   text: "#f1f5f9",
   textSecondary: "#94a3b8",
   border: "#334155",
@@ -90,7 +90,7 @@ interface FormErrors {
 }
 
 export default function EnhancedSignup() {
-  const { signUp, error: authError } = useAuth();
+  const { error: authError } = useAuth();
   const router = useRouter();
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
@@ -255,7 +255,7 @@ export default function EnhancedSignup() {
         termsAccepted: true,
       };
 
-      const result = await signUpUser(userData);
+      await signUpUser(userData);
       console.log("Sign up successful");
 
       // Success feedback

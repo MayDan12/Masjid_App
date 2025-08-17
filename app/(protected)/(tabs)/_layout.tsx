@@ -1,18 +1,26 @@
 import { useAuth } from "@/app/context/AuthContext";
 import { HapticTab } from "@/components/HapticTab";
-import { IconSymbol } from "@/components/ui/IconSymbol";
+import SunMoonIcon from "@/components/icons/HomeIcon";
+import MosqueIcon from "@/components/icons/MosqueIcon";
+import PrayerTimeIcon from "@/components/icons/PrayerTime";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { Tabs } from "expo-router";
-import { LogOut } from "lucide-react-native";
+import { Image } from "expo-image";
+import { Tabs, useRouter } from "expo-router";
+import { Calendar, LogOut, UserCog } from "lucide-react-native";
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, Pressable, TextInput } from "react-native";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   console.log("TabLayout rendering");
-  const { logOut } = useAuth();
+  const { logOut, user } = useAuth();
+  const router = useRouter();
+
+  const name = user?.displayName;
 
   return (
     <Tabs
@@ -23,35 +31,98 @@ export default function TabLayout() {
         tabBarStyle: Platform.select({
           ios: {
             position: "absolute",
+            backgroundColor: "#1e293b",
           },
-          default: {},
+          android: {
+            elevation: 8,
+            backgroundColor: "#1e293b",
+          },
+          default: {
+            backgroundColor: "#1e293b",
+          },
         }),
-        headerRight: () => (
-          <LogOut
-            size={22}
-            color={Colors[colorScheme ?? "light"].text}
-            onPress={() => logOut()}
-            className="mr-10"
-          />
+        headerTitle: () => (
+          <ThemedView
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              backgroundColor: "transparent",
+            }}
+          >
+            <Pressable onPress={() => router.push("/user/profile")}>
+              <Image
+                source={
+                  user?.photoURL
+                    ? { uri: user.photoURL }
+                    : require("@/assets/images/mosque.jpg")
+                }
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 16,
+                  marginRight: 8,
+                }}
+              />
+            </Pressable>
+            <ThemedText>{name}</ThemedText>
+            <TextInput
+              placeholder="Enter your email"
+              style={{ flex: 1, marginLeft: 8 }}
+              onChangeText={(text) => console.log(text)}
+            />
+          </ThemedView>
         ),
+        headerRight: () => (
+          <Pressable
+            onPress={logOut}
+            style={{ marginRight: 24 }}
+            android_ripple={{ color: "gray", borderless: true }}
+          >
+            <LogOut
+              size={22}
+              color={Colors[colorScheme ?? "light"].text}
+              onPress={() => logOut()}
+            />
+          </Pressable>
+        ),
+        headerStyle: {
+          backgroundColor: "#1e293b",
+        },
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <SunMoonIcon size={24} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="prayertime"
         options={{
-          title: "Explore",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
-          ),
+          title: "Prayer Time",
+          tabBarIcon: ({ color }) => <PrayerTimeIcon size={30} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="events"
+        options={{
+          title: "Events",
+          tabBarIcon: ({ color }) => <Calendar size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="masjid"
+        options={{
+          title: "Masjid",
+          tabBarIcon: ({ color }) => <MosqueIcon size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color }) => <UserCog size={24} color={color} />,
         }}
       />
     </Tabs>

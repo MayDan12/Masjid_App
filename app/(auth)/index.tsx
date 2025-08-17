@@ -14,7 +14,7 @@ export default function Intro() {
       <SafeAreaView style={styles.container}>
         {/* Top/center content */}
         <ThemedView style={styles.content}>
-          <ThemedText style={styles.title}>Welcome to Masjid App</ThemedText>
+          <ThemedText style={styles.title}>Welcome to MasjidLink</ThemedText>
 
           <ThemedText style={styles.subtitle}>
             Discover prayer times, events, and more. Please login or get started
