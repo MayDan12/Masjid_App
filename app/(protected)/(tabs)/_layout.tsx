@@ -3,8 +3,6 @@ import { HapticTab } from "@/components/HapticTab";
 import SunMoonIcon from "@/components/icons/HomeIcon";
 import MosqueIcon from "@/components/icons/MosqueIcon";
 import PrayerTimeIcon from "@/components/icons/PrayerTime";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -12,7 +10,7 @@ import { Image } from "expo-image";
 import { Tabs, useRouter } from "expo-router";
 import { Calendar, LogOut, UserCog } from "lucide-react-native";
 import React from "react";
-import { Platform, Pressable, TextInput } from "react-native";
+import { Platform, Pressable, Text, View } from "react-native";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -42,7 +40,7 @@ export default function TabLayout() {
           },
         }),
         headerTitle: () => (
-          <ThemedView
+          <View
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -64,13 +62,21 @@ export default function TabLayout() {
                 }}
               />
             </Pressable>
-            <ThemedText>{name}</ThemedText>
-            <TextInput
-              placeholder="Enter your email"
-              style={{ flex: 1, marginLeft: 8 }}
-              onChangeText={(text) => console.log(text)}
-            />
-          </ThemedView>
+            <View>
+              <Text
+                style={{ fontFamily: "Inter_600SemiBold" }}
+                className="text-white text-xl"
+              >
+                Assalamualaikum!
+              </Text>
+              <Text
+                style={{ fontFamily: "Inter_400Regular" }}
+                className="text-white"
+              >
+                {name}
+              </Text>
+            </View>
+          </View>
         ),
         headerRight: () => (
           <Pressable
