@@ -1,4 +1,3 @@
-import { getEvents } from "@/services/getEvent";
 import { Event, EventType } from "@/types/event";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -12,13 +11,17 @@ import {
   Heart,
   Lock,
   MapPin,
+  Plus,
+  Presentation,
   Repeat,
   Search,
+  Sparkles,
   UserCheck,
   Users,
   Video,
+  Wrench,
 } from "lucide-react-native";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Dimensions,
   ScrollView,
@@ -31,43 +34,31 @@ import {
 
 const { width } = Dimensions.get("window");
 
-export default function EventsScreen() {
+export default function ImamEventsScreen() {
   const [selectedFilter, setSelectedFilter] = useState<EventType | "all">(
     "all"
   );
-  const [events, setEvents] = useState<Event[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await getEvents();
-      if (result.success) {
-        setEvents(result.data);
-      }
-    };
-    fetchData();
-  }, []);
-
-  // console.log("Fetched Events:", events);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const getEventIcon = (type: EventType) => {
     const iconProps = { size: 20, color: "#10b981" };
     switch (type) {
-      case "janazah":
+      case "prayer":
         return <Clock {...iconProps} />;
       case "lecture":
         return <BookOpen {...iconProps} />;
-      case "class":
+      case "community":
         return <Users {...iconProps} />;
-      case "iftar":
+      case "charity":
         return <Heart {...iconProps} />;
-      case "other":
+      case "education":
         return <GraduationCap {...iconProps} />;
-      // case "celebration":
-      //   return <Sparkles {...iconProps} />;
-      // case "workshop":
-      //   return <Wrench {...iconProps} />;
-      // case "conference":
-      //   return <Presentation {...iconProps} />;
+      case "celebration":
+        return <Sparkles {...iconProps} />;
+      case "workshop":
+        return <Wrench {...iconProps} />;
+      case "conference":
+        return <Presentation {...iconProps} />;
       default:
         return <Calendar {...iconProps} />;
     }
@@ -75,123 +66,123 @@ export default function EventsScreen() {
 
   const getEventTypeColor = (type: EventType) => {
     switch (type) {
-      case "janazah":
+      case "prayer":
         return "#10b981";
       case "lecture":
         return "#3b82f6";
-      case "class":
+      case "community":
         return "#8b5cf6";
-      case "iftar":
+      case "charity":
         return "#ef4444";
-      case "other":
+      case "education":
         return "#f59e0b";
-      // case "celebration":
-      //   return "#ec4899";
-      // case "workshop":
-      //   return "#06b6d4";
-      // case "conference":
-      //   return "#84cc16";
+      case "celebration":
+        return "#ec4899";
+      case "workshop":
+        return "#06b6d4";
+      case "conference":
+        return "#84cc16";
       default:
         return "#64748b";
     }
   };
 
-  // const mockEvents: Event[] = [
-  //   {
-  //     id: "1",
-  //     title: "Friday Jummah Prayer",
-  //     description: "Weekly congregational prayer with Khutbah by Imam Abdullah",
-  //     date: "2024-01-26",
-  //     startTime: "13:00",
-  //     endTime: "14:00",
-  //     location: "Central Mosque, Lagos",
-  //     type: "prayer",
-  //     isRecurring: true,
-  //     recurringFrequency: "weekly",
-  //     isPublic: true,
-  //     maxAttendees: "500",
-  //     rsvps: ["user1", "user2", "user3"],
-  //     createdAt: "2024-01-20T10:00:00Z",
-  //     updatedAt: "2024-01-20T10:00:00Z",
-  //     createdBy: "imam1",
-  //   },
-  //   {
-  //     id: "2",
-  //     title: "Islamic Finance Workshop",
-  //     description:
-  //       "Learn about Halal investment strategies and Islamic banking principles",
-  //     date: "2024-01-28",
-  //     startTime: "15:00",
-  //     endTime: "18:00",
-  //     location: "Community Center Hall A",
-  //     type: "workshop",
-  //     isRecurring: false,
-  //     isPublic: true,
-  //     maxAttendees: "50",
-  //     rsvps: ["user1", "user4", "user5", "user6"],
-  //     createdAt: "2024-01-15T09:00:00Z",
-  //     updatedAt: "2024-01-15T09:00:00Z",
-  //     createdBy: "organizer1",
-  //     meetingLink: "https://zoom.us/j/123456789",
-  //   },
-  //   {
-  //     id: "3",
-  //     title: "Quran Study Circle",
-  //     description: "Weekly Tafseer session focusing on Surah Al-Baqarah",
-  //     date: "2024-01-27",
-  //     startTime: "19:00",
-  //     endTime: "20:30",
-  //     location: "Masjid An-Nur",
-  //     type: "education",
-  //     isRecurring: true,
-  //     recurringFrequency: "weekly",
-  //     isPublic: true,
-  //     maxAttendees: "30",
-  //     rsvps: ["user2", "user7", "user8"],
-  //     createdAt: "2024-01-10T14:00:00Z",
-  //     updatedAt: "2024-01-10T14:00:00Z",
-  //     createdBy: "teacher1",
-  //   },
-  //   {
-  //     id: "4",
-  //     title: "Charity Drive for Orphans",
-  //     description: "Collecting donations and supplies for local orphanage",
-  //     date: "2024-01-29",
-  //     startTime: "09:00",
-  //     endTime: "17:00",
-  //     location: "Masjid Parking Lot",
-  //     type: "charity",
-  //     isRecurring: false,
-  //     isPublic: true,
-  //     rsvps: ["user1", "user3", "user9", "user10", "user11"],
-  //     createdAt: "2024-01-18T11:00:00Z",
-  //     updatedAt: "2024-01-18T11:00:00Z",
-  //     createdBy: "volunteer1",
-  //   },
-  //   {
-  //     id: "5",
-  //     title: "Eid Celebration Planning",
-  //     description: "Community meeting to organize upcoming Eid festivities",
-  //     date: "2024-01-30",
-  //     startTime: "20:00",
-  //     endTime: "21:30",
-  //     location: "Virtual Meeting",
-  //     type: "celebration",
-  //     isRecurring: false,
-  //     isPublic: false,
-  //     maxAttendees: "20",
-  //     rsvps: ["user2", "user4", "user12"],
-  //     createdAt: "2024-01-19T16:00:00Z",
-  //     updatedAt: "2024-01-19T16:00:00Z",
-  //     createdBy: "committee1",
-  //     meetingLink: "https://meet.google.com/abc-defg-hij",
-  //   },
-  // ];
+  const mockEvents: Event[] = [
+    {
+      id: "1",
+      title: "Friday Jummah Prayer",
+      description: "Weekly congregational prayer with Khutbah by Imam Abdullah",
+      date: "2024-01-26",
+      startTime: "13:00",
+      endTime: "14:00",
+      location: "Central Mosque, Lagos",
+      type: "prayer",
+      isRecurring: true,
+      recurringFrequency: "weekly",
+      isPublic: true,
+      maxAttendees: "500",
+      rsvps: ["user1", "user2", "user3"],
+      createdAt: "2024-01-20T10:00:00Z",
+      updatedAt: "2024-01-20T10:00:00Z",
+      createdBy: "imam1",
+    },
+    {
+      id: "2",
+      title: "Islamic Finance Workshop",
+      description:
+        "Learn about Halal investment strategies and Islamic banking principles",
+      date: "2024-01-28",
+      startTime: "15:00",
+      endTime: "18:00",
+      location: "Community Center Hall A",
+      type: "workshop",
+      isRecurring: false,
+      isPublic: true,
+      maxAttendees: "50",
+      rsvps: ["user1", "user4", "user5", "user6"],
+      createdAt: "2024-01-15T09:00:00Z",
+      updatedAt: "2024-01-15T09:00:00Z",
+      createdBy: "organizer1",
+      meetingLink: "https://zoom.us/j/123456789",
+    },
+    {
+      id: "3",
+      title: "Quran Study Circle",
+      description: "Weekly Tafseer session focusing on Surah Al-Baqarah",
+      date: "2024-01-27",
+      startTime: "19:00",
+      endTime: "20:30",
+      location: "Masjid An-Nur",
+      type: "education",
+      isRecurring: true,
+      recurringFrequency: "weekly",
+      isPublic: true,
+      maxAttendees: "30",
+      rsvps: ["user2", "user7", "user8"],
+      createdAt: "2024-01-10T14:00:00Z",
+      updatedAt: "2024-01-10T14:00:00Z",
+      createdBy: "teacher1",
+    },
+    {
+      id: "4",
+      title: "Charity Drive for Orphans",
+      description: "Collecting donations and supplies for local orphanage",
+      date: "2024-01-29",
+      startTime: "09:00",
+      endTime: "17:00",
+      location: "Masjid Parking Lot",
+      type: "charity",
+      isRecurring: false,
+      isPublic: true,
+      rsvps: ["user1", "user3", "user9", "user10", "user11"],
+      createdAt: "2024-01-18T11:00:00Z",
+      updatedAt: "2024-01-18T11:00:00Z",
+      createdBy: "volunteer1",
+    },
+    {
+      id: "5",
+      title: "Eid Celebration Planning",
+      description: "Community meeting to organize upcoming Eid festivities",
+      date: "2024-01-30",
+      startTime: "20:00",
+      endTime: "21:30",
+      location: "Virtual Meeting",
+      type: "celebration",
+      isRecurring: false,
+      isPublic: false,
+      maxAttendees: "20",
+      rsvps: ["user2", "user4", "user12"],
+      createdAt: "2024-01-19T16:00:00Z",
+      updatedAt: "2024-01-19T16:00:00Z",
+      createdBy: "committee1",
+      meetingLink: "https://meet.google.com/abc-defg-hij",
+    },
+  ];
 
   const filteredEvents =
     selectedFilter === "all"
-      ? events
-      : events.filter((event) => event.type === selectedFilter);
+      ? mockEvents
+      : mockEvents.filter((event) => event.type === selectedFilter);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -214,20 +205,23 @@ export default function EventsScreen() {
   };
 
   const getUpcomingEvents = () => {
-    return events.slice(0, 3);
+    return mockEvents.slice(0, 3);
   };
 
   const eventTypes: (EventType | "all")[] = [
     "all",
-    "iftar",
+    "prayer",
     "lecture",
-    "janazah",
-    "other",
+    "community",
+    "charity",
+    "education",
+    "celebration",
   ];
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
+
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerTop}>
@@ -237,6 +231,13 @@ export default function EventsScreen() {
               Connect with your community
             </Text>
           </View>
+
+          <TouchableOpacity
+            style={styles.createButton}
+            onPress={() => setShowCreateModal(true)}
+          >
+            <Plus size={20} color="#ffffff" />
+          </TouchableOpacity>
         </View>
 
         {/* Search and Filter */}
@@ -404,6 +405,22 @@ export default function EventsScreen() {
         ))}
       </View>
 
+      {/* Create Event Button */}
+      <TouchableOpacity
+        style={styles.createEventButton}
+        onPress={() => setShowCreateModal(true)}
+      >
+        <LinearGradient
+          colors={["#10b981", "#059669"]}
+          style={styles.createEventGradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+        >
+          <Plus size={20} color="#ffffff" />
+          <Text style={styles.createEventText}>Create New Event</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+
       {/* Bottom Spacing */}
       <View style={styles.bottomSpacing} />
     </ScrollView>
@@ -416,8 +433,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#0f172a",
   },
   header: {
+    paddingTop: 50,
     paddingHorizontal: 20,
-    paddingBottom: 14,
+    paddingBottom: 20,
   },
   headerTop: {
     flexDirection: "row",
@@ -428,13 +446,12 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: "#ffffff",
     fontSize: 24,
-    fontFamily: "Inter_700Bold",
+    fontWeight: "700",
   },
   headerSubtitle: {
     color: "#64748b",
     fontSize: 14,
     marginTop: 2,
-    fontFamily: "Inter_400Regular",
   },
   createButton: {
     width: 44,
@@ -464,7 +481,6 @@ const styles = StyleSheet.create({
     color: "#64748b",
     fontSize: 14,
     marginLeft: 12,
-    fontFamily: "Inter_400Regular",
   },
   filterButton: {
     width: 44,
@@ -479,7 +495,7 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: "row",
     paddingHorizontal: 20,
-    marginBottom: 20,
+    marginBottom: 25,
     gap: 12,
   },
   statCard: {
@@ -493,7 +509,7 @@ const styles = StyleSheet.create({
   statNumber: {
     color: "#ffffff",
     fontSize: 20,
-    fontFamily: "Inter_700Bold",
+    fontWeight: "700",
     marginTop: 8,
   },
   statLabel: {
@@ -501,10 +517,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     opacity: 0.8,
     marginTop: 4,
-    fontFamily: "Inter_400Regular",
   },
   filtersContainer: {
-    marginBottom: 20,
+    marginBottom: 25,
   },
   filtersContent: {
     paddingHorizontal: 20,
@@ -525,7 +540,7 @@ const styles = StyleSheet.create({
   filterChipText: {
     color: "#64748b",
     fontSize: 14,
-    fontFamily: "Inter_400Regular",
+    fontWeight: "500",
   },
   filterChipTextActive: {
     color: "#10b981",
@@ -540,12 +555,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: "#ffffff",
     fontSize: 18,
-    fontFamily: "Inter_600SemiBold",
+    fontWeight: "600",
   },
   seeAllText: {
     color: "#10b981",
     fontSize: 14,
-    fontFamily: "Inter_500Medium",
+    fontWeight: "500",
   },
   eventsList: {
     paddingHorizontal: 20,
@@ -562,7 +577,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 8,
+    marginBottom: 12,
   },
   eventTypeContainer: {
     flexDirection: "row",
@@ -581,19 +596,18 @@ const styles = StyleSheet.create({
   eventTitle: {
     color: "#ffffff",
     fontSize: 18,
-    fontFamily: "Inter_600SemiBold",
-    marginBottom: 4,
+    fontWeight: "600",
+    marginBottom: 8,
   },
   eventDescription: {
     color: "#94a3b8",
     fontSize: 14,
     lineHeight: 20,
-    marginBottom: 10,
-    fontFamily: "Inter_400Regular",
+    marginBottom: 16,
   },
   eventDetails: {
     gap: 8,
-    marginBottom: 14,
+    marginBottom: 16,
   },
   eventDetailRow: {
     flexDirection: "row",
@@ -604,7 +618,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 12,
     flex: 1,
-    fontFamily: "Inter_400Regular",
   },
   eventFooter: {
     flexDirection: "row",
@@ -621,7 +634,7 @@ const styles = StyleSheet.create({
   attendeesText: {
     color: "#10b981",
     fontSize: 14,
-    fontFamily: "Inter_500Medium",
+    fontWeight: "500",
     marginLeft: 8,
   },
   createEventButton: {
@@ -640,7 +653,7 @@ const styles = StyleSheet.create({
   createEventText: {
     color: "#ffffff",
     fontSize: 16,
-    fontFamily: "Inter_600SemiBold",
+    fontWeight: "600",
   },
   bottomSpacing: {
     height: 100,

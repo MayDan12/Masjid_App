@@ -1,11 +1,15 @@
 import MosqueIcon from "@/components/icons/MosqueIcon";
+import { getAllMasjids } from "@/services/getMasjids";
 import {
   Bell,
   Calendar,
   Clock,
+  Clock1,
   Edit3Icon,
   Heart,
   MapPin,
+  Music,
+  Settings2,
 } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -41,9 +45,6 @@ const data = [
     buttonText: "Azan Settings",
     gradient: ["#7c3aed", "#a855f7"],
   },
-];
-
-const data2 = [
   {
     icon: <Calendar size={28} color="#fff" />,
     title: "Events",
@@ -59,6 +60,35 @@ const data2 = [
     link: "/dashboard/donate",
     buttonText: "Donate Now",
     gradient: ["#ea580c", "#f97316"],
+  },
+];
+
+const data2 = [
+  {
+    icon: <Clock1 size={28} color="#fff" />,
+    title: "Real-Time Azan",
+    description: "Receive real-time azan notifications based on your location",
+    link: "/dashboard/azan",
+    buttonText: "Enable Alerts",
+    gradient: ["#2563eb", "#3b82f6"],
+  },
+
+  {
+    icon: <Settings2 size={28} color="#fff" />,
+    title: "Custom Preferences",
+    description: "Toggle alerts per prayer & personalize your azan experience",
+    link: "/dashboard/azan-preferences",
+    buttonText: "Set Preferences",
+    gradient: ["#9333ea", "#a855f7"],
+  },
+  {
+    icon: <Music size={28} color="#fff" />,
+    title: "Azan Voices",
+    description:
+      "Choose from free & premium azan voices like Mecca, Medina, and Egypt",
+    link: "/dashboard/azan-voices",
+    buttonText: "Select Voice",
+    gradient: ["#16a34a", "#22c55e"],
   },
 ];
 
@@ -145,6 +175,7 @@ export default function HomeScreen() {
   const [timeToNext, setTimeToNext] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState<string>("");
+  const [masjids, setMasjids] = useState<any[]>([]);
 
   const today = new Date();
   const day = today.toLocaleDateString("en-US", { day: "numeric" });
@@ -259,8 +290,23 @@ export default function HomeScreen() {
     return () => clearInterval(interval);
   }, [prayerTimes]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getAllMasjids();
+      if (result.success) {
+        setMasjids(result.data);
+      } else {
+        console.error(result.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // console.log(masjids);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["right", "bottom", "left"]}>
       <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
       <ScrollView
         style={styles.scrollView}
@@ -327,7 +373,7 @@ export default function HomeScreen() {
             <Carousel
               ref={ref}
               width={width / 2.2}
-              height={200}
+              height={220}
               data={data}
               loop
               autoPlay
@@ -359,7 +405,7 @@ export default function HomeScreen() {
             <Carousel
               ref={ref}
               width={width / 2.2}
-              height={200}
+              height={220}
               data={data2}
               loop
               autoPlay
@@ -398,7 +444,9 @@ export default function HomeScreen() {
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Explore Masjids</Text>
             <TouchableOpacity>
-              <Text style={styles.viewAllText}>View All</Text>
+              <Text style={styles.viewAllText} className="underline">
+                View All
+              </Text>
             </TouchableOpacity>
           </View>
 
@@ -407,8 +455,9 @@ export default function HomeScreen() {
             height={width * 0.5}
             data={masjidData}
             loop
-            autoPlay
+            autoPlay={true}
             autoPlayInterval={5000}
+            mode="parallax"
             style={styles.masjidCarousel}
             renderItem={({ item }) => (
               <TouchableOpacity style={styles.masjidCard}>
@@ -465,6 +514,8 @@ export default function HomeScreen() {
             )}
           />
         </View>
+
+        {/* Events */}
 
         {/* Recent Activities */}
         <View style={styles.activitiesContainer}>

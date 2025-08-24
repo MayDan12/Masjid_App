@@ -1,21 +1,21 @@
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
-export const PrayerLoadingState: React.FC = () => {
+interface PrayerLoadingStateProps {
+  loading: boolean;
+}
+
+export const PrayerLoadingState: React.FC<PrayerLoadingStateProps> = ({
+  loading,
+}) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.icon}>🕌</Text>
-        <ActivityIndicator
-          size="large"
-          color="#3b82f6"
-          style={styles.spinner}
-        />
-        <Text style={styles.title}>Loading Prayer Times</Text>
-        <Text style={styles.subtitle}>
-          Fetching accurate prayer times for your location...
-        </Text>
-      </View>
+    <View style={styles.content}>
+      <Text style={styles.icon}>🕌</Text>
+      <ActivityIndicator size="large" color="#3b82f6" style={styles.spinner} />
+      <Text style={styles.title}>Loading Prayer Times</Text>
+      <Text style={styles.subtitle}>
+        Fetching accurate prayer times for your location...
+      </Text>
     </View>
   );
 };

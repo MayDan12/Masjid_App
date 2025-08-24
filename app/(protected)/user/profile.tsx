@@ -1,14 +1,12 @@
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, View } from "react-native";
 
 export default function Profile() {
   return (
-    <SafeAreaView style={{ flex: 1, padding: 16, backgroundColor: "#1e293b" }}>
-      <ThemedView>
-        <ThemedText>Profile</ThemedText>
-      </ThemedView>
-    </SafeAreaView>
+    // <SafeAreaView style={{ flex: 1, padding: 16, backgroundColor: "#1e293b" }}>
+    <View style={{ flex: 1, padding: 16, backgroundColor: "#0f172a" }}>
+      <Text>Profile</Text>
+    </View>
+    // </SafeAreaView>
   );
 }

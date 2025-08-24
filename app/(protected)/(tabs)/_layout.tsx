@@ -29,14 +29,14 @@ export default function TabLayout() {
         tabBarStyle: Platform.select({
           ios: {
             position: "absolute",
-            backgroundColor: "#1e293b",
+            backgroundColor: "#0f172a",
           },
           android: {
             elevation: 8,
-            backgroundColor: "#1e293b",
+            backgroundColor: "#0f172a",
           },
           default: {
-            backgroundColor: "#1e293b",
+            backgroundColor: "#0f172a",
           },
         }),
         headerTitle: () => (
@@ -92,7 +92,7 @@ export default function TabLayout() {
           </Pressable>
         ),
         headerStyle: {
-          backgroundColor: "#1e293b",
+          backgroundColor: "#0f172a",
         },
       }}
     >

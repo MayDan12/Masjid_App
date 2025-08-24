@@ -4,15 +4,16 @@ import SunMoonIcon from "@/components/icons/HomeIcon";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { Tabs } from "expo-router";
-import { LogOut } from "lucide-react-native";
+import { Tabs, useRouter } from "expo-router";
+import { Calendar, LogOut } from "lucide-react-native";
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, Pressable, Text, View } from "react-native";
 
 export default function ImamLayout() {
   const colorScheme = useColorScheme();
   console.log("ImamLayout rendering");
   const { logOut } = useAuth();
+  const router = useRouter();
 
   return (
     <Tabs
@@ -23,20 +24,71 @@ export default function ImamLayout() {
         tabBarStyle: Platform.select({
           ios: {
             position: "absolute",
+            backgroundColor: "#0f172a",
           },
-          default: {},
           android: {
             elevation: 8,
+            backgroundColor: "#0f172a",
+          },
+          default: {
+            backgroundColor: "#0f172a",
           },
         }),
-        headerRight: () => (
-          <LogOut
-            size={22}
-            color={Colors[colorScheme ?? "light"].text}
-            onPress={() => logOut()}
-            className="mr-10"
-          />
+        headerTitle: () => (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              backgroundColor: "transparent",
+            }}
+          >
+            <Pressable onPress={() => router.push("/user/profile")}>
+              {/* <Image
+                        source={
+                          user?.photoURL
+                            ? { uri: user.photoURL }
+                            : require("@/assets/images/mosque.jpg")
+                        }
+                        style={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: 16,
+                          marginRight: 8,
+                        }}
+                      /> */}
+            </Pressable>
+            <View>
+              <Text
+                style={{ fontFamily: "Inter_600SemiBold" }}
+                className="text-white text-xl"
+              >
+                Assalamualaikum!
+              </Text>
+              <Text
+                style={{ fontFamily: "Inter_400Regular" }}
+                className="text-white"
+              >
+                {/* {name} */}
+              </Text>
+            </View>
+          </View>
         ),
+        headerRight: () => (
+          <Pressable
+            onPress={logOut}
+            style={{ marginRight: 24 }}
+            android_ripple={{ color: "gray", borderless: true }}
+          >
+            <LogOut
+              size={22}
+              color={Colors[colorScheme ?? "light"].text}
+              onPress={() => logOut()}
+            />
+          </Pressable>
+        ),
+        headerStyle: {
+          backgroundColor: "#0f172a",
+        },
       }}
     >
       <Tabs.Screen
@@ -46,14 +98,15 @@ export default function ImamLayout() {
           tabBarIcon: ({ color }) => <SunMoonIcon size={24} color={color} />,
         }}
       />
-      {/*
+
       <Tabs.Screen
-        name="prayertime"
+        name="imamevents"
         options={{
-          title: "Prayer Time",
-          tabBarIcon: ({ color }) => <PrayerTimeIcon size={30} color={color} />,
+          title: "Events",
+          tabBarIcon: ({ color }) => <Calendar size={24} color={color} />,
         }}
       />
+      {/*
       <Tabs.Screen
         name="events"
         options={{

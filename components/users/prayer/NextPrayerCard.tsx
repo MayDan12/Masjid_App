@@ -1,6 +1,13 @@
-import { Clock } from "lucide-react-native";
-import React, { useEffect, useState } from "react";
+import { LinearGradient } from "expo-linear-gradient";
+import { Cloud, Moon, Sun, Sunset } from "lucide-react-native";
+import React, { JSX, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+
+interface CurrentPrayer {
+  name: string;
+  time: string;
+  minutes: number;
+}
 
 interface NextPrayerCardProps {
   nextPrayer: {
@@ -9,10 +16,16 @@ interface NextPrayerCardProps {
     minutes: number;
     isTomorrow?: boolean;
   } | null;
+
+  // isCurrent: boolean;
+  CurrentPrayer: CurrentPrayer | null;
+
   formatTime: (time: string) => string;
 }
 
 export const NextPrayerCard: React.FC<NextPrayerCardProps> = ({
+  // isCurrent,
+  CurrentPrayer,
   nextPrayer,
   formatTime,
 }) => {
@@ -49,52 +62,73 @@ export const NextPrayerCard: React.FC<NextPrayerCardProps> = ({
 
   if (!nextPrayer) return null;
 
-  const prayerIcons: Record<string, string> = {
-    Fajr: "🌅",
-    Dhuhr: "🌞",
-    Asr: "🌤️",
-    Maghrib: "🌆",
-    Isha: "🌙",
+  const formatCurrentTime = (time: string | undefined) => {
+    if (!time) return "";
+
+    // Split into hours and minutes
+    const [hourStr, minuteStr] = time.split(":");
+    let hour = parseInt(hourStr, 10);
+    const minute = parseInt(minuteStr, 10);
+
+    // Decide AM/PM
+    const ampm = hour >= 12 ? "PM" : "AM";
+
+    // Convert to 12-hour format
+    if (hour === 0) {
+      hour = 12; // Midnight
+    } else if (hour > 12) {
+      hour -= 12;
+    }
+
+    return `${hour}:${minute.toString().padStart(2, "0")} ${ampm}`;
+  };
+
+  const prayerIcons: Record<string, JSX.Element> = {
+    Fajr: <Sun size={20} color="#f59e0b" />, // sunrise color
+    Dhuhr: <Sun size={20} color="#eab308" />, // midday yellow
+    Asr: <Cloud size={20} color="#f97316" />, // orange sky
+    Maghrib: <Sunset size={20} color="#ef4444" />, // sunset red
+    Isha: <Moon size={20} color="#8b5cf6" />, // night purple
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Clock size={16} color="#3b82f6" />
-        <Text style={styles.headerText}>NEXT PRAYER</Text>
-      </View>
+    <LinearGradient
+      colors={["#1e293b", "#0f172a"]}
+      style={styles.container}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+    >
+      <Text style={styles.nowText}>Now</Text>
 
-      <View style={styles.content}>
-        <View style={styles.prayerInfo}>
-          <Text style={styles.icon}>{prayerIcons[nextPrayer.name]}</Text>
-          <View>
-            <Text style={styles.prayerName}>
-              {nextPrayer.name}
-              {nextPrayer.isTomorrow && (
-                <Text style={styles.tomorrowText}> (Tomorrow)</Text>
-              )}
-            </Text>
-            <Text style={styles.prayerTime}>{formatTime(nextPrayer.time)}</Text>
-          </View>
-        </View>
-
-        <View style={styles.countdown}>
-          <Text style={styles.countdownLabel}>in</Text>
-          <Text style={styles.countdownTime}>{timeRemaining}</Text>
+      <View style={styles.currentPrayerRow}>
+        <Text style={styles.icon}>{prayerIcons[CurrentPrayer?.name]} </Text>
+        <View>
+          <Text style={styles.prayerName}>{CurrentPrayer?.name}</Text>
         </View>
       </View>
-    </View>
+
+      <Text style={styles.prayerTime}>
+        {formatCurrentTime(CurrentPrayer?.time)}
+      </Text>
+      {/* <Text style={styles.prayerTime}>{formatTime(nextPrayer.time)}</Text> */}
+      <Text style={styles.nextPrayerText}>
+        {nextPrayer.name}
+        {nextPrayer.isTomorrow && (
+          <Text style={styles.tomorrowText}> (Tomorrow)</Text>
+        )}{" "}
+        in {formatTime(nextPrayer.time)}
+      </Text>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#1e40af",
-    borderRadius: 16,
+    flex: 2,
     padding: 20,
-    marginBottom: 20,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#3b82f6",
+    borderColor: "rgba(30, 41, 59, 0.5)",
   },
   header: {
     flexDirection: "row",
@@ -108,10 +142,34 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginLeft: 6,
   },
-  content: {
+  nextPrayerText: {
+    color: "#64748b",
+    fontSize: 14,
+    fontFamily: "Inter_400Regular",
+  },
+  nowText: {
+    color: "#64748b",
+    fontSize: 12,
+    marginBottom: 8,
+    fontFamily: "Inter_500Medium",
+  },
+  currentPrayerRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 8,
+  },
+  currentPrayerName: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "600",
+    marginLeft: 8,
+  },
+  content: {
+    flex: 2,
+    padding: 20,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "rgba(30, 41, 59, 0.5)",
   },
   prayerInfo: {
     flexDirection: "row",
@@ -119,13 +177,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   icon: {
-    fontSize: 28,
+    fontSize: 20,
     marginRight: 16,
   },
   prayerName: {
     color: "#f1f5f9",
-    fontSize: 22,
-    fontWeight: "700",
+    fontSize: 16,
+    fontFamily: "Inter_700Bold",
     marginBottom: 2,
   },
   tomorrowText: {
@@ -134,9 +192,10 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   prayerTime: {
-    color: "#93c5fd",
-    fontSize: 16,
-    fontWeight: "500",
+    color: "#ffffff",
+    fontSize: 32,
+    fontFamily: "Inter_700Bold",
+    marginBottom: 8,
   },
   countdown: {
     alignItems: "flex-end",

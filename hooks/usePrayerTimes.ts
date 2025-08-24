@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from "react";
-import { PrayerData, PrayerTimings } from "@/types/prayer";
+import { PrayerData } from "@/types/prayer";
+import { useCallback, useEffect, useState } from "react";
 
 export const usePrayerTimes = () => {
   const [prayerData, setPrayerData] = useState<PrayerData | null>(null);
@@ -55,12 +55,12 @@ export const usePrayerTimes = () => {
     for (let i = 0; i < prayerTimes.length; i++) {
       if (currentTime < prayerTimes[i].minutes) {
         return i === 0
-          ? prayerTimes[prayerTimes.length - 1].name
-          : prayerTimes[i - 1].name;
+          ? prayerTimes[prayerTimes.length - 1] // last prayer yesterday
+          : prayerTimes[i - 1]; // the one before the upcoming
       }
     }
 
-    return prayerTimes[prayerTimes.length - 1].name;
+    return prayerTimes[prayerTimes.length - 1]; // last prayer of the day
   }, [prayerData]);
 
   const getNextPrayer = useCallback(() => {
