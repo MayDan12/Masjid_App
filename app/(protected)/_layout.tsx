@@ -40,7 +40,6 @@
 //     </Stack>
 //   );
 // }
-import Loader from "@/components/Loader";
 import { checkUserRole } from "@/services/checkrole";
 import { Redirect, Stack } from "expo-router";
 import { useEffect, useState } from "react";
@@ -92,10 +91,10 @@ export default function ProtectedLayout() {
     fetchRole();
   }, [user]);
 
-  // Show loader while auth or role is loading
-  if (authLoading || isLoading) {
-    return <Loader loading={authLoading} isLoading />;
-  }
+  // // Show loader while auth or role is loading
+  // if (authLoading || isLoading) {
+  //   return <Loader loading={authLoading} isLoading />;
+  // }
 
   // Handle error state
   if (error) {
