@@ -138,7 +138,7 @@ import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Tabs, useRouter } from "expo-router";
-import { Calendar, Home, LogOut, UserCog } from "lucide-react-native";
+import { CalendarClockIcon, Home, LogOut, UserCog } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 
 export default function TabLayout() {
@@ -222,27 +222,30 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => <Home size={24} color={color} />,
+          headerShown: false,
         }}
       />
       <Tabs.Screen
         name="prayertime"
         options={{
           title: "Prayer Time",
-          tabBarIcon: ({ color }) => <PrayerTimeIcon size={30} color={color} />,
+          tabBarIcon: ({ color }) => <PrayerTimeIcon size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="events"
         options={{
           title: "Events",
-          tabBarIcon: ({ color }) => <Calendar size={24} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <CalendarClockIcon size={24} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="masjid"
         options={{
           title: "Masjid",
-          tabBarIcon: ({ color }) => <MosqueIcon size={28} color={color} />,
+          tabBarIcon: ({ color }) => <MosqueIcon size={26} color={color} />,
         }}
       />
       <Tabs.Screen

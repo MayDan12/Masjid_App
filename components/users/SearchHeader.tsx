@@ -108,17 +108,16 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#0f172a",
     paddingHorizontal: 16,
-    paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: "#334155",
+    paddingTop: 16,
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     textAlign: "center",
     marginBottom: 10,
-    color: "#fff",
+    color: "#0D1B2A",
     fontFamily: "Inter_700Bold",
   },
   searchContainer: {

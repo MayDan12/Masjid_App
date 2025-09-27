@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { JSX } from "react";
+import { JSX } from "react";
 import {
   RefreshControl,
   ScrollView,
@@ -96,119 +96,126 @@ export default function PrayerTimesScreen() {
   return (
     <SafeAreaView style={styles.container} edges={["right", "bottom", "left"]}>
       <StatusBar style="light" />
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.contentContainer}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor="#3b82f6"
-            colors={["#3b82f6"]}
-          />
-        }
-        showsVerticalScrollIndicator={false}
+      <LinearGradient
+        colors={["#FFFFFF", "#F5F5DC"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={StyleSheet.absoluteFill}
       >
-        <View style={styles.header}>
-          <View style={styles.headerTop}>
-            <TouchableOpacity>
-              <ChevronLeft size={24} color="#10b981" />
-            </TouchableOpacity>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.contentContainer}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor="#3b82f6"
+              colors={["#3b82f6"]}
+            />
+          }
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.header}>
+            <View style={styles.headerTop}>
+              <TouchableOpacity>
+                <ChevronLeft size={24} color="#10b981" />
+              </TouchableOpacity>
 
-            <View style={styles.dateContainer}>
-              <Text style={styles.dateText}>Today, 20 August</Text>
-              <Text style={styles.hijriDate}>26 Safar 1447</Text>
-            </View>
-
-            <TouchableOpacity>
-              <ChevronRight size={24} color="#10b981" />
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.locationRow}>
-            <View style={styles.locationContainer}>
-              <MapPin size={16} color="#10b981" />
-              <Text style={styles.locationText}>Lagos</Text>
-            </View>
-            <Text style={styles.organizationText}>
-              Muslim World League (MWL)
-            </Text>
-          </View>
-        </View>
-        <View style={styles.cardContainer}>
-          <NextPrayerCard
-            CurrentPrayer={currentPrayer}
-            // isCurrent={currentPrayer === nextPrayer.name}
-            nextPrayer={nextPrayer}
-            formatTime={formatTime}
-          />
-          <DateHeader prayerData={prayerData} />
-        </View>
-
-        <View style={styles.prayerTimesContainer}>
-          <Text style={styles.sectionTitle}>Prayer Times</Text>
-
-          <View style={styles.prayersList}>
-            {orderedPrayers.map((prayerKey) => {
-              const time =
-                prayerData.timings[
-                  prayerKey as keyof typeof prayerData.timings
-                ];
-              const isPrayer = [
-                "Fajr",
-                "Dhuhr",
-                "Asr",
-                "Maghrib",
-                "Isha",
-              ].includes(prayerKey);
-
-              return (
-                <PrayerTimeCard
-                  key={prayerKey}
-                  name={prayerNames[prayerKey]}
-                  time={time}
-                  icon={prayerIconss[prayerKey]}
-                  isCurrent={prayerKey === currentPrayer?.name}
-                  isPrayer={isPrayer}
-                  formatTime={formatTime}
-                />
-              );
-            })}
-          </View>
-        </View>
-
-        <View style={styles.progressSection}>
-          <Text style={styles.progressTitle}>Your Progress</Text>
-
-          <LinearGradient
-            colors={["#7c3aed", "#10b981"]}
-            style={styles.adBanner}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-          >
-            <View style={styles.adContent}>
-              <View style={styles.adLeft}>
-                <Text style={styles.adTitle}>DON&apos;T LIKE ADS?</Text>
-                <Text style={styles.adSubtitle}>
-                  Try Premium and you&apos;ll never go back
-                </Text>
+              <View style={styles.dateContainer}>
+                <Text style={styles.dateText}>Today, 20 August</Text>
+                <Text style={styles.hijriDate}>26 Safar 1447</Text>
               </View>
-              <TouchableOpacity style={styles.premiumButton}>
-                <Text style={styles.premiumButtonText}>GET PREMIUM</Text>
+
+              <TouchableOpacity>
+                <ChevronRight size={24} color="#10b981" />
               </TouchableOpacity>
             </View>
-          </LinearGradient>
-        </View>
 
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            Pull down to refresh • Times calculated using ISNA method
-          </Text>
-          <Text style={styles.footerSubtext}>
-            Timezone: {prayerData.meta.timezone}
-          </Text>
-        </View>
-      </ScrollView>
+            <View style={styles.locationRow}>
+              <View style={styles.locationContainer}>
+                <MapPin size={16} color="#10b981" />
+                <Text style={styles.locationText}>Lagos</Text>
+              </View>
+              <Text style={styles.organizationText}>
+                Muslim World League (MWL)
+              </Text>
+            </View>
+          </View>
+          <View style={styles.cardContainer}>
+            <NextPrayerCard
+              CurrentPrayer={currentPrayer}
+              // isCurrent={currentPrayer === nextPrayer.name}
+              nextPrayer={nextPrayer}
+              formatTime={formatTime}
+            />
+            <DateHeader prayerData={prayerData} />
+          </View>
+
+          <View style={styles.prayerTimesContainer}>
+            <Text style={styles.sectionTitle}>Prayer Times</Text>
+
+            <View style={styles.prayersList}>
+              {orderedPrayers.map((prayerKey) => {
+                const time =
+                  prayerData.timings[
+                    prayerKey as keyof typeof prayerData.timings
+                  ];
+                const isPrayer = [
+                  "Fajr",
+                  "Dhuhr",
+                  "Asr",
+                  "Maghrib",
+                  "Isha",
+                ].includes(prayerKey);
+
+                return (
+                  <PrayerTimeCard
+                    key={prayerKey}
+                    name={prayerNames[prayerKey]}
+                    time={time}
+                    icon={prayerIconss[prayerKey]}
+                    isCurrent={prayerKey === currentPrayer?.name}
+                    isPrayer={isPrayer}
+                    formatTime={formatTime}
+                  />
+                );
+              })}
+            </View>
+          </View>
+
+          <View style={styles.progressSection}>
+            <Text style={styles.progressTitle}>Your Progress</Text>
+
+            <LinearGradient
+              colors={["#7c3aed", "#10b981"]}
+              style={styles.adBanner}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            >
+              <View style={styles.adContent}>
+                <View style={styles.adLeft}>
+                  <Text style={styles.adTitle}>DON&apos;T LIKE ADS?</Text>
+                  <Text style={styles.adSubtitle}>
+                    Try Premium and you&apos;ll never go back
+                  </Text>
+                </View>
+                <TouchableOpacity style={styles.premiumButton}>
+                  <Text style={styles.premiumButtonText}>GET PREMIUM</Text>
+                </TouchableOpacity>
+              </View>
+            </LinearGradient>
+          </View>
+
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>
+              Pull down to refresh • Times calculated using ISNA method
+            </Text>
+            <Text style={styles.footerSubtext}>
+              Timezone: {prayerData.meta.timezone}
+            </Text>
+          </View>
+        </ScrollView>
+      </LinearGradient>
     </SafeAreaView>
   );
 }
@@ -216,23 +223,22 @@ export default function PrayerTimesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0f172a",
   },
   header: {
-    paddingHorizontal: 20,
-    paddingBottom: 10,
+    paddingHorizontal: 10,
+    paddingBottom: 8,
   },
   headerTop: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 15,
+    marginBottom: 5,
   },
   dateContainer: {
     alignItems: "center",
   },
   dateText: {
-    color: "#ffffff",
+    color: "#0D1B2A",
     fontSize: 18,
     fontWeight: "600",
   },
@@ -276,13 +282,13 @@ const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
+    marginBottom: 8,
     gap: 10,
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: "Inter_600SemiBold",
-    color: "#f1f5f9",
+    color: "#0D1B2A",
     marginBottom: 10,
     textAlign: "center",
   },
@@ -310,10 +316,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   progressTitle: {
-    color: "#ffffff",
-    fontSize: 20,
-    fontWeight: "600",
+    color: "#0D1B2A",
+    fontSize: 18,
+
     marginBottom: 20,
+    fontFamily: "Inter_600SemiBold",
   },
   adBanner: {
     borderRadius: 16,

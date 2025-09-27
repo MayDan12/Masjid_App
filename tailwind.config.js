@@ -10,12 +10,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        plum: "#5A2A47",
+        emerald: "#2E7D32",
+        sand: "#F5F5DC",
+        midnight: "#0D1B2A",
+        gold: "#D4AF37",
+
+        sapphire: "#1E3A8A",
         violet: "#8C3C64",
         coral: "#E97C62",
         peach: "#F6A88E",
         cream: "#F7E9DF",
-        sand: "#FAF7F3",
         charcoal: "#3A3A3A",
       },
     },

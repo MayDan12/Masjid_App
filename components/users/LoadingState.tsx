@@ -1,12 +1,20 @@
+import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
 export const LoadingState: React.FC = () => {
   return (
-    <View style={styles.container}>
-      <ActivityIndicator size="large" color="#3B82F6" />
-      <Text style={styles.text}>Finding masjids near you...</Text>
-    </View>
+    <LinearGradient
+      colors={["#FFFFFF", "#F5F5DC"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={StyleSheet.absoluteFill}
+    >
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#3B82F6" />
+        <Text style={styles.text}>Finding masjids near you...</Text>
+      </View>
+    </LinearGradient>
   );
 };
 
@@ -15,7 +23,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#0f172a",
   },
   text: {
     marginTop: 16,

@@ -131,6 +131,19 @@ export default function ProtectedLayout() {
           animationDuration: 300, // Duration in milliseconds
         }}
       />
+      <Stack.Screen
+        name="user/tasbih"
+        options={{
+          headerTitle: () => <HeaderTitle title="Tasbih" />,
+          headerStyle: {
+            backgroundColor: "#2E7D32",
+          },
+          headerTintColor: "#fff",
+          headerTitleAlign: "center",
+          animation: "slide_from_left", // Slide in from the right
+          animationDuration: 300, // Duration in milliseconds
+        }}
+      />
     </Stack>
   );
 }

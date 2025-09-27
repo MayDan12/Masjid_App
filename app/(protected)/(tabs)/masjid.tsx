@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Alert, FlatList, Linking, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -9,6 +9,7 @@ import { MasjidCard } from "@/components/users/MasjidCard";
 import { SearchHeader } from "@/components/users/SearchHeader";
 import { useMasjids } from "@/hooks/useMasjids";
 import { FilterOption, Masjid } from "@/types/masjid";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function DiscoverScreen() {
   const { masjids, loading, error } = useMasjids();
@@ -101,24 +102,31 @@ export default function DiscoverScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
-      <SearchHeader
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        selectedFilter={selectedFilter}
-        onFilterChange={setSelectedFilter}
-        showFilters={showFilters}
-        onToggleFilters={() => setShowFilters(!showFilters)}
-        filterOptions={filterOptions}
-        resultsCount={filteredMasjids.length}
-      />
+      <LinearGradient
+        colors={["#FFFFFF", "#F5F5DC"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={StyleSheet.absoluteFill}
+      >
+        <SearchHeader
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          selectedFilter={selectedFilter}
+          onFilterChange={setSelectedFilter}
+          showFilters={showFilters}
+          onToggleFilters={() => setShowFilters(!showFilters)}
+          filterOptions={filterOptions}
+          resultsCount={filteredMasjids.length}
+        />
 
-      <FlatList
-        data={filteredMasjids}
-        renderItem={renderMasjidCard}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContainer}
-        showsVerticalScrollIndicator={false}
-      />
+        <FlatList
+          data={filteredMasjids}
+          renderItem={renderMasjidCard}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContainer}
+          showsVerticalScrollIndicator={false}
+        />
+      </LinearGradient>
     </SafeAreaView>
   );
 }
@@ -126,7 +134,6 @@ export default function DiscoverScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0f172a",
   },
   listContainer: {
     padding: 16,

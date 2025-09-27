@@ -1,19 +1,20 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react-native";
+import { useState } from "react";
 import {
   ActivityIndicator,
   Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "../context/AuthContext";
 
 interface FormErrors {
@@ -27,6 +28,7 @@ export default function Login() {
   const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -100,14 +102,30 @@ export default function Login() {
             />
             {errors.email && <Text style={styles.error}>{errors.email}</Text>}
 
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              placeholderTextColor="#6B7280"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
+            <View className="relative">
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                placeholderTextColor="#6B7280"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+              />
+              <TouchableOpacity
+                className="absolute right-0 top-2 h-full px-3 py-2 text-gray-600 "
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeOff size={23} color="#2E7D32" />
+                ) : (
+                  <Eye size={23} color="#2E7D32" />
+                )}
+                <Text className="sr-only">
+                  {showPassword ? "Hide password" : "Show password"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
             {errors.password && (
               <Text style={styles.error}>{errors.password}</Text>
             )}

@@ -10,32 +10,17 @@ interface DateHeaderProps {
 
 export const DateHeader: React.FC<DateHeaderProps> = ({ prayerData }) => {
   return (
-    // <View style={styles.container}>
-    //   {/* <Text style={styles.title}>🕌 Prayer Times</Text>
-    //   <Text style={styles.location}>Lagos, Nigeria</Text> */}
-
-    //   <View style={styles.dateContainer}>
-    //     <View style={styles.dateRow}>
-    //       <Calendar size={14} color="#64748b" />
-    //       <Text style={styles.gregorianDate}>{prayerData.date.readable}</Text>
-    //     </View>
-    //     <Text style={styles.hijriDate}>
-    //       {prayerData.date.hijri.date} {prayerData.date.hijri.month.en}{" "}
-    //       {prayerData.date.hijri.year} AH
-    //     </Text>
-    //   </View>
-    // </View>
     <LinearGradient
-      colors={["#065f46", "#064e3b"]}
+      colors={["#2E7D32", "#065f46"]}
       style={styles.progressCard}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
       <View style={styles.checkContainer}>
-        <Check size={24} color="#ffffff" />
+        <Check size={24} color="#F5F5DC" />
       </View>
       {/* <Text style={styles.progressNumber}>{prayersCompleted}/5</Text> */}
-      <Text style={styles.progressText}>prayed</Text>
+      <Text style={styles.progressText}>Prayed</Text>
     </LinearGradient>
   );
 };
@@ -97,13 +82,14 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   progressNumber: {
-    color: "#ffffff",
+    color: "#F5F5DC",
     fontSize: 24,
     fontWeight: "700",
   },
   progressText: {
-    color: "#ffffff",
+    color: "#F5F5DC",
     fontSize: 12,
+    fontFamily: "Inter_600SemiBold",
     opacity: 0.8,
   },
 });

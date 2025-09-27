@@ -93,7 +93,7 @@ export const NextPrayerCard: React.FC<NextPrayerCardProps> = ({
 
   return (
     <LinearGradient
-      colors={["#1e293b", "#0f172a"]}
+      colors={["#1e293b", "#0D1B2A", "#0f172a"]}
       style={styles.container}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}

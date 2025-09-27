@@ -1,17 +1,43 @@
+// import { sanitizeData } from "@/constants/sanitize";
+// import { db } from "@/firebase/firebaseConfig";
+// import { collection, getDocs } from "firebase/firestore";
+
+// export const getEvents = async () => {
+//   try {
+//     const snapshot = await getDocs(collection(db, "events"));
+//     const events = snapshot.docs.map((doc) => ({
+//       id: doc.id,
+//       ...sanitizeData(doc.data()),
+//     }));
+
+//     return { success: true, data: events };
+//   } catch (error: any) {
+//     return { error: true, message: error.message || "Failed to fetch events" };
+//   }
+// };
 import { sanitizeData } from "@/constants/sanitize";
 import { db } from "@/firebase/firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
-export const getEvents = async () => {
+// Realtime listener
+export const subscribeToEvents = (callback: (events: any[]) => void) => {
   try {
-    const snapshot = await getDocs(collection(db, "events"));
-    const events = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...sanitizeData(doc.data()),
-    }));
+    const eventsRef = collection(db, "events");
+    const q = query(eventsRef, orderBy("createdAt", "desc"));
 
-    return { success: true, data: events };
+    // Listen for realtime updates
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const events = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...sanitizeData(doc.data()),
+      }));
+      callback(events);
+    });
+
+    // Return unsubscribe function so you can stop listening
+    return unsubscribe;
   } catch (error: any) {
-    return { error: true, message: error.message || "Failed to fetch events" };
+    console.error("Error subscribing to events:", error.message);
+    return () => {}; // empty cleanup if error
   }
 };
