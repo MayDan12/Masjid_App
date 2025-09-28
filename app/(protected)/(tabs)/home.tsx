@@ -1,6 +1,7 @@
 import MosqueIcon from "@/components/icons/MosqueIcon";
 import PrayerTimeIcon from "@/components/icons/PrayerTime";
 import QiblaIcon from "@/components/icons/QiblaIcon";
+import ShimmerSkeleton from "@/components/ShimmerSkeleton";
 import { getAllMasjids } from "@/services/getMasjids";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -343,8 +344,18 @@ export default function HomeScreen() {
 
           <View style={styles.prayerTimeContainer}>
             {loading ? (
-              <View style={styles.prayerTimeCard}>
-                <Text style={styles.loadingText}>Loading prayer times...</Text>
+              <View>
+                <ShimmerSkeleton
+                  height={40}
+                  variant="rect"
+                  style={{ marginBottom: 4 }}
+                />
+                <ShimmerSkeleton
+                  height={14}
+                  width="60%"
+                  lines={3}
+                  variant="text"
+                />
               </View>
             ) : (
               <ImageBackground

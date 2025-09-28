@@ -124,16 +124,16 @@ export const NextPrayerCard: React.FC<NextPrayerCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1,
     padding: 20,
-    borderRadius: 20,
-    borderWidth: 1,
+    borderRadius: 22,
+    borderWidth: 0.8,
     borderColor: "rgba(30, 41, 59, 0.5)",
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 12,
+    marginBottom: 10,
   },
   headerText: {
     color: "#93c5fd",
@@ -149,18 +149,18 @@ const styles = StyleSheet.create({
   },
   nowText: {
     color: "#64748b",
-    fontSize: 12,
-    marginBottom: 8,
+    fontSize: 13,
+    marginBottom: 4,
     fontFamily: "Inter_500Medium",
   },
   currentPrayerRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 8,
+    marginBottom: 5,
   },
   currentPrayerName: {
     color: "#ffffff",
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "600",
     marginLeft: 8,
   },
@@ -193,9 +193,9 @@ const styles = StyleSheet.create({
   },
   prayerTime: {
     color: "#ffffff",
-    fontSize: 32,
+    fontSize: 28,
     fontFamily: "Inter_700Bold",
-    marginBottom: 8,
+    marginBottom: 5,
   },
   countdown: {
     alignItems: "flex-end",
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   },
   countdownTime: {
     color: "#f1f5f9",
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "700",
   },
 });

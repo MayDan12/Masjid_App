@@ -15,6 +15,7 @@ import { NextPrayerCard } from "@/components/users/prayer/NextPrayerCard";
 import { PrayerErrorState } from "@/components/users/prayer/PrayerErrorState";
 import { PrayerLoadingState } from "@/components/users/prayer/PrayerLoadingState";
 import { PrayerTimeCard } from "@/components/users/prayer/PrayerTimeCard";
+import { usePrayerProgress } from "@/hooks/usePrayerProgress";
 import { usePrayerTimes } from "@/hooks/usePrayerTimes";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -37,17 +38,7 @@ const prayerNames: Record<string, string> = {
   Isha: "Isha",
 };
 
-const prayerIcons: Record<string, string> = {
-  Fajr: "🌅",
-  Sunrise: "☀️",
-  Dhuhr: "🌞",
-  Asr: "🌤️",
-  Sunset: "🌇",
-  Maghrib: "🌆",
-  Isha: "🌙",
-};
-
-const prayerIconss: Record<string, JSX.Element> = {
+const prayerIcons: Record<string, JSX.Element> = {
   Fajr: <Sun size={20} color="#f59e0b" />, // sunrise color
   Dhuhr: <Sun size={20} color="#eab308" />, // midday yellow
   Asr: <Cloud size={20} color="#f97316" />, // orange sky
@@ -56,6 +47,8 @@ const prayerIconss: Record<string, JSX.Element> = {
 };
 
 export default function PrayerTimesScreen() {
+  const today = new Date().toISOString().split("T")[0]; // "2024-01-15"
+  const { progress, togglePrayer, completedCount } = usePrayerProgress(today);
   const {
     prayerData,
     loading,
@@ -122,7 +115,7 @@ export default function PrayerTimesScreen() {
               </TouchableOpacity>
 
               <View style={styles.dateContainer}>
-                <Text style={styles.dateText}>Today, 20 August</Text>
+                <Text style={styles.dateText}>{today}</Text>
                 <Text style={styles.hijriDate}>26 Safar 1447</Text>
               </View>
 
@@ -148,7 +141,11 @@ export default function PrayerTimesScreen() {
               nextPrayer={nextPrayer}
               formatTime={formatTime}
             />
-            <DateHeader prayerData={prayerData} />
+            <DateHeader
+              prayerData={prayerData}
+              completedCount={completedCount}
+              loading={loading}
+            />
           </View>
 
           <View style={styles.prayerTimesContainer}>
@@ -173,10 +170,12 @@ export default function PrayerTimesScreen() {
                     key={prayerKey}
                     name={prayerNames[prayerKey]}
                     time={time}
-                    icon={prayerIconss[prayerKey]}
+                    icon={prayerIcons[prayerKey]}
                     isCurrent={prayerKey === currentPrayer?.name}
                     isPrayer={isPrayer}
                     formatTime={formatTime}
+                    progress={progress} // Pass down the state
+                    togglePrayer={togglePrayer} // Pass down the function
                   />
                 );
               })}
@@ -226,13 +225,12 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 10,
-    paddingBottom: 8,
+    paddingBottom: 5,
   },
   headerTop: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 5,
   },
   dateContainer: {
     alignItems: "center",
@@ -282,19 +280,19 @@ const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 8,
+    marginBottom: 5,
     gap: 10,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: "Inter_600SemiBold",
     color: "#0D1B2A",
-    marginBottom: 10,
+    marginBottom: 5,
     textAlign: "center",
   },
   prayersList: {
     paddingHorizontal: 8,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   footer: {
     alignItems: "center",

@@ -571,6 +571,7 @@
 //   },
 // });
 
+import ShimmerSkeleton from "@/components/ShimmerSkeleton";
 import { subscribeToEvents } from "@/services/getEvent";
 import { Event } from "@/types/event";
 import { LinearGradient } from "expo-linear-gradient";
@@ -587,7 +588,6 @@ import {
 import { useEffect, useState } from "react";
 import {
   FlatList,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -628,21 +628,14 @@ const filters = ["All", "lecture", "janazah", "iftar", "class", "other"];
 export default function EventsScreen() {
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [events, setEvents] = useState<Event[]>([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const result = await getEvents();
-  //     if (result.success) {
-  //       setEvents(result.data);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     // Subscribe to realtime events
     const unsubscribe = subscribeToEvents((newEvents) => {
       setEvents(newEvents);
+      setLoading(false);
     });
 
     // Cleanup on unmount
@@ -698,7 +691,7 @@ export default function EventsScreen() {
         style={StyleSheet.absoluteFill}
       />
 
-      <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Upcoming Events</Text>
@@ -746,25 +739,42 @@ export default function EventsScreen() {
           )}
         />
 
-        {/* Events List */}
-        {/* <FlatList
-          horizontal={false}
-          data={filteredEvents}
+        <FlatList
+          data={loading ? [] : filteredEvents} // empty while loading
           keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          ListEmptyComponent={
+            loading ? (
+              // Skeleton loaders while fetching
+              <View style={{ gap: 12 }}>
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+                  <ShimmerSkeleton key={i} height={70} variant="circle" />
+                ))}
+              </View>
+            ) : (
+              // Message when no events found
+              <Text
+                style={{
+                  textAlign: "center",
+                  marginTop: 20,
+                  color: COLORS.midnight,
+                }}
+              >
+                No events found
+              </Text>
+            )
+          }
           renderItem={({ item: event }) => (
             <View
-              key={event.id}
               style={styles.eventCard}
               className="bg-white border-emerald/25 px-5 py-2 flex-row items-center"
             >
-              <View>
-             
-                <TouchableOpacity className="items-center justify-center bg-emerald/25 p-3 rounded-2xl">
-                  {getEventTypeIcon(event.type)}
-                </TouchableOpacity>
-              
-              </View>
+              {/* Event Icon */}
+              <TouchableOpacity className="items-center justify-center bg-emerald/25 p-3 rounded-2xl">
+                {getEventTypeIcon(event.type)}
+              </TouchableOpacity>
+
+              {/* Event Info */}
               <View className="flex-1 ml-4">
                 <View style={styles.eventHeader}>
                   <Text style={styles.eventTitle}>{event.title}</Text>
@@ -778,6 +788,7 @@ export default function EventsScreen() {
                     {event.type}
                   </Text>
                 </View>
+
                 <View style={styles.eventFooter}>
                   <View className="space-y-2">
                     <View className="flex-row items-center">
@@ -799,6 +810,7 @@ export default function EventsScreen() {
                       </Text>
                     </View>
                   </View>
+
                   <TouchableOpacity className="p-2 bg-emerald rounded-lg ">
                     <Text style={styles.seeAllText}>Details</Text>
                   </TouchableOpacity>
@@ -806,62 +818,8 @@ export default function EventsScreen() {
               </View>
             </View>
           )}
-        /> */}
-        {filteredEvents.map((event) => (
-          <View
-            key={event.id}
-            style={styles.eventCard}
-            className="bg-white border-emerald/25 px-5 py-2 flex-row items-center"
-          >
-            <View>
-              {/* Event Type Icon */}
-              <TouchableOpacity className="items-center justify-center bg-emerald/25 p-3 rounded-2xl">
-                {getEventTypeIcon(event.type)}
-              </TouchableOpacity>
-              {/* <View>{getEventTypeIcon(event.type)}</View> */}
-            </View>
-            <View className="flex-1 ml-4">
-              <View style={styles.eventHeader}>
-                <Text style={styles.eventTitle}>{event.title}</Text>
-                <Text
-                  style={[
-                    styles.eventType,
-                    { color: getEventTypeColor(event.type) },
-                  ]}
-                  className="capitalize"
-                >
-                  {event.type}
-                </Text>
-              </View>
-              <View style={styles.eventFooter}>
-                <View className="space-y-2">
-                  <View className="flex-row items-center">
-                    <Users size={16} color={COLORS.midnight} />
-                    <Text style={styles.attendeesText}>
-                      {event.rsvps.length} attending
-                    </Text>
-                  </View>
-                  <View className="flex-row items-center">
-                    <CalendarClock size={16} color={COLORS.midnight} />
-                    <Text style={styles.attendeesText}>
-                      {event.date
-                        ? new Date(event.date).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                          })
-                        : "TBD"}{" "}
-                      / {event.startTime || "TBD"} - {event.endTime || "TBD"}
-                    </Text>
-                  </View>
-                </View>
-                <TouchableOpacity className="p-2 bg-emerald rounded-lg ">
-                  <Text style={styles.seeAllText}>Details</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        ))}
-      </ScrollView>
+        />
+      </View>
     </View>
   );
 }
