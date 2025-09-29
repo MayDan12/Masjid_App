@@ -125,10 +125,12 @@ export default function ProtectedLayout() {
         options={{
           headerTitle: () => <HeaderTitle title="Profile" />,
           headerStyle: {
-            backgroundColor: "#0f172a",
+            backgroundColor: "#2E7D32",
           },
-          animation: "slide_from_left", // Slide in from the right
+          animation: "slide_from_right", // Slide in from the right
           animationDuration: 300, // Duration in milliseconds
+          headerTintColor: "#fff",
+          headerTitleAlign: "center",
         }}
       />
       <Stack.Screen

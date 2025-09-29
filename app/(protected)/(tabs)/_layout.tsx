@@ -138,7 +138,7 @@ import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Tabs, useRouter } from "expo-router";
-import { CalendarClockIcon, Home, LogOut, UserCog } from "lucide-react-native";
+import { CalendarDaysIcon, Heart, Home, LogOut } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 
 export default function TabLayout() {
@@ -237,7 +237,7 @@ export default function TabLayout() {
         options={{
           title: "Events",
           tabBarIcon: ({ color }) => (
-            <CalendarClockIcon size={24} color={color} />
+            <CalendarDaysIcon size={24} color={color} />
           ),
         }}
       />
@@ -251,8 +251,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
-          tabBarIcon: ({ color }) => <UserCog size={24} color={color} />,
+          title: "Donations",
+          tabBarIcon: ({ color }) => <Heart size={24} color={color} />,
         }}
       />
     </Tabs>

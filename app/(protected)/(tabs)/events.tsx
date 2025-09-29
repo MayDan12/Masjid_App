@@ -574,7 +574,6 @@
 import ShimmerSkeleton from "@/components/ShimmerSkeleton";
 import { subscribeToEvents } from "@/services/getEvent";
 import { Event } from "@/types/event";
-import { LinearGradient } from "expo-linear-gradient";
 import {
   BookOpen,
   Calendar,
@@ -681,15 +680,9 @@ export default function EventsScreen() {
       : events.filter((e) => e.type === selectedFilter);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#F5F5DC" }}>
       {/* <StatusBar style="light" /> */}
       {/* Background */}
-      <LinearGradient
-        colors={["#FFFFFF", COLORS.sand]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={StyleSheet.absoluteFill}
-      />
 
       <View style={styles.container}>
         {/* Header */}
@@ -767,7 +760,7 @@ export default function EventsScreen() {
           renderItem={({ item: event }) => (
             <View
               style={styles.eventCard}
-              className="bg-white border-emerald/25 px-5 py-2 flex-row items-center"
+              className=" border-emerald/25 px-5 py-2 flex-row items-center"
             >
               {/* Event Icon */}
               <TouchableOpacity className="items-center justify-center bg-emerald/25 p-3 rounded-2xl">
@@ -878,7 +871,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#fbfbf1",
     borderWidth: 1,
     borderColor: COLORS.emerald,
     marginRight: 8,
@@ -897,7 +890,7 @@ const styles = StyleSheet.create({
   },
   eventCard: {
     borderRadius: 16,
-
+    backgroundColor: "#fbfbf1",
     borderWidth: 1,
     marginBottom: 10,
   },

@@ -101,7 +101,7 @@ export default function DiscoverScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <LinearGradient
         colors={["#FFFFFF", "#F5F5DC"]}
         start={{ x: 0, y: 0 }}
