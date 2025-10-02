@@ -48,6 +48,11 @@ const prayerIcons: Record<string, JSX.Element> = {
 
 export default function PrayerTimesScreen() {
   const today = new Date().toISOString().split("T")[0]; // "2024-01-15"
+  const todays = new Date();
+  const day = todays.toLocaleDateString("en-US", { day: "numeric" });
+  const month = todays.toLocaleDateString("en-US", { month: "long" });
+  const year = todays.getFullYear();
+  const formattedDate = `${day} ${month}, ${year}`;
   const { progress, togglePrayer, completedCount } = usePrayerProgress(today);
   const {
     prayerData,
@@ -110,7 +115,7 @@ export default function PrayerTimesScreen() {
             </TouchableOpacity>
 
             <View style={styles.dateContainer}>
-              <Text style={styles.dateText}>{today}</Text>
+              <Text style={styles.dateText}>{formattedDate}</Text>
               <Text style={styles.hijriDate}>26 Safar 1447</Text>
             </View>
 
@@ -234,6 +239,7 @@ const styles = StyleSheet.create({
     color: "#0D1B2A",
     fontSize: 18,
     fontWeight: "600",
+    fontFamily: "Inter_600SemiBold",
   },
   hijriDate: {
     color: "#64748b",
