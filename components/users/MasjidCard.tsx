@@ -1,13 +1,5 @@
 import { Masjid } from "@/types/masjid";
-import {
-  Clock,
-  Heart,
-  MapPin,
-  Navigation,
-  Phone,
-  Star,
-  Users,
-} from "lucide-react-native";
+import { Heart, Star } from "lucide-react-native";
 import React from "react";
 import {
   Dimensions,
@@ -22,8 +14,6 @@ interface MasjidCardProps {
   masjid: Masjid;
   isFavorite: boolean;
   onToggleFavorite: () => void;
-  onGetDirections: () => void;
-  onCall: () => void;
 }
 
 const { width } = Dimensions.get("window");
@@ -33,17 +23,27 @@ export const MasjidCard: React.FC<MasjidCardProps> = ({
   masjid,
   isFavorite,
   onToggleFavorite,
-  onGetDirections,
-  onCall,
 }) => {
   return (
     <View style={styles.card}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={{ uri: masjid.image }}
-          style={styles.image}
-          resizeMode="cover"
-        />
+      <View style={styles.imageContainer} className="flex-row  p-4 ">
+        {masjid?.image && (
+          <Image
+            source={{ uri: masjid.image }}
+            style={styles.image}
+            resizeMode="cover"
+          />
+        )}
+
+        <View className="flex-1">
+          <View style={styles.header}>
+            <Text style={styles.name} numberOfLines={1}>
+              {masjid?.name}
+            </Text>
+            <Text style={styles.address}>{masjid?.address} </Text>
+          </View>
+        </View>
+
         <TouchableOpacity
           onPress={onToggleFavorite}
           style={styles.favoriteButton}
@@ -54,85 +54,47 @@ export const MasjidCard: React.FC<MasjidCardProps> = ({
             fill={isFavorite ? "#EF4444" : "transparent"}
           />
         </TouchableOpacity>
-
-        <View
-          style={[
-            styles.statusBadge,
-            masjid.isOpen ? styles.openBadge : styles.closedBadge,
-          ]}
-        >
-          <Text style={styles.statusText}>
-            {masjid.isOpen ? "Open" : "Closed"}
-          </Text>
-        </View>
       </View>
+      <View className="h-0.5 w-full bg-emerald/30" />
 
       <View style={styles.content}>
-        <View style={styles.header}>
-          <Text style={styles.name} numberOfLines={2}>
-            {masjid.name}
-          </Text>
-          <View style={styles.rating}>
-            <Star size={14} color="#F59E0B" fill="#F59E0B" />
-            <Text style={styles.ratingText}>{masjid.rating}</Text>
-          </View>
-        </View>
-
-        <View style={styles.addressRow}>
-          <MapPin size={14} color="#fff" />
-          <Text style={styles.address} numberOfLines={1}>
-            {masjid.address}
-          </Text>
-        </View>
-
-        <View style={styles.statsRow}>
+        <View
+          style={styles.statsRow}
+          className="flex-row items-center justify-evenly"
+        >
           <View style={styles.stat}>
-            <Navigation size={14} color="#fff" />
-            <Text style={styles.statText}>{masjid.distance} km</Text>
+            <Text style={styles.statText}>
+              {masjid?.rating ?? 0} <Star color={"#FFD700"} size={20} />
+            </Text>
+            <Text style={styles.statTextSub}>1.2k reviews</Text>
           </View>
           <View style={styles.stat}>
-            <Users size={14} color="#fff" />
-            <Text style={styles.statText}>{masjid.congregation}</Text>
+            <Text style={styles.statText}>Sunni </Text>
+            {/* <Text style={styles.statText}>{masjid.congregation}</Text> */}
+            <Text style={styles.statTextSub}>Denomination</Text>
           </View>
-        </View>
-
-        <View style={styles.prayerInfo}>
-          <View style={styles.prayerHeader}>
-            <Clock size={14} color="#3B82F6" />
-            <Text style={styles.prayerLabel}>Next Prayer</Text>
-          </View>
-          <View style={styles.prayerDetails}>
-            <Text style={styles.prayerName}>{masjid.nextPrayer}</Text>
-            <Text style={styles.prayerTime}>{masjid.nextPrayerTime}</Text>
+          <View style={styles.stat}>
+            <Text style={styles.statText}>{masjid?.followersCount ?? 0}</Text>
+            <Text style={styles.statTextSub}>Members</Text>
           </View>
         </View>
 
         <View style={styles.facilities}>
-          {masjid.facilities.slice(0, 3).map((facility, index) => (
-            <View key={index} style={styles.facilityTag}>
-              <Text style={styles.facilityText}>{facility}</Text>
-            </View>
-          ))}
-          {masjid.facilities.length > 3 && (
-            <View style={styles.facilityTag}>
-              <Text style={styles.facilityText}>
-                +{masjid.facilities.length - 3}
-              </Text>
-            </View>
-          )}
-        </View>
+          {Array.isArray(masjid.facilityTypes) &&
+            masjid.facilityTypes.slice(0, 3).map((facility, index) => (
+              <View key={index} style={styles.facilityTag}>
+                <Text style={styles.facilityText}>{facility}</Text>
+              </View>
+            ))}
 
-        <View style={styles.actions}>
-          <TouchableOpacity
-            style={styles.primaryButton}
-            onPress={onGetDirections}
-          >
-            <Navigation size={16} color="#FFFFFF" />
-            <Text style={styles.primaryButtonText}>Directions</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.secondaryButton} onPress={onCall}>
-            <Phone size={16} color="#3B82F6" />
-          </TouchableOpacity>
+          {Array.isArray(masjid.facilityTypes) &&
+            masjid.facilityTypes.length > 3 && (
+              <View style={styles.facilityTag}>
+                <Text style={styles.facilityText}>
+                  +{masjid.facilityTypes.length - 3}
+                </Text>
+              </View>
+            )}
         </View>
       </View>
     </View>
@@ -142,7 +104,7 @@ export const MasjidCard: React.FC<MasjidCardProps> = ({
 const styles = StyleSheet.create({
   card: {
     width: cardWidth,
-    backgroundColor: "#334155",
+    backgroundColor: "#fbfbf1",
     borderRadius: 16,
     marginBottom: 16,
     shadowColor: "#000",
@@ -156,17 +118,16 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   imageContainer: {
-    position: "relative",
-    height: 200,
+    padding: 10,
   },
   image: {
-    width: "100%",
-    height: "100%",
+    width: "25%",
+    height: "25%",
+    borderRadius: 14,
+    aspectRatio: 2 / 2,
+    marginRight: 10,
   },
   favoriteButton: {
-    position: "absolute",
-    top: 12,
-    right: 12,
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
     padding: 8,
@@ -198,16 +159,11 @@ const styles = StyleSheet.create({
   content: {
     padding: 16,
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: 4,
-  },
+  header: {},
   name: {
     flex: 1,
-    fontSize: 18,
-    color: "#fff",
+    fontSize: 20,
+    color: "#0D1B2A",
     marginRight: 8,
     fontFamily: "Inter_700Bold",
   },
@@ -234,22 +190,27 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 6,
     fontSize: 14,
-    color: "#fff",
+    color: "#0D1B2A",
     fontFamily: "Inter_400Regular",
   },
   statsRow: {
     flexDirection: "row",
-    marginBottom: 6,
+    marginBottom: 10,
   },
   stat: {
-    flexDirection: "row",
     alignItems: "center",
     marginRight: 16,
   },
   statText: {
     marginLeft: 4,
+    fontSize: 18,
+    color: "#0D1B2A",
+    fontFamily: "Inter_600SemiBold",
+  },
+  statTextSub: {
+    marginLeft: 4,
     fontSize: 14,
-    color: "#fff",
+    color: "#2E7D32",
     fontFamily: "Inter_400Regular",
   },
   prayerInfo: {
@@ -287,18 +248,17 @@ const styles = StyleSheet.create({
   facilities: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginBottom: 16,
   },
   facilityTag: {
-    backgroundColor: "#F3F4F6",
+    backgroundColor: "rgba(46, 125, 50, 0.15)",
     borderRadius: 16,
-    paddingHorizontal: 8,
+    paddingHorizontal: 9,
     paddingVertical: 4,
     marginRight: 6,
     marginBottom: 4,
   },
   facilityText: {
-    fontSize: 12,
+    fontSize: 13,
     color: "#4B5563",
     fontFamily: "Inter_400Regular",
   },

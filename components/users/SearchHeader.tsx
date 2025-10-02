@@ -1,5 +1,5 @@
 import { FilterOption } from "@/types/masjid";
-import { Filter, Search, X } from "lucide-react-native";
+import { Search, X } from "lucide-react-native";
 import React from "react";
 import {
   StyleSheet,
@@ -17,7 +17,6 @@ interface SearchHeaderProps {
   showFilters: boolean;
   onToggleFilters: () => void;
   filterOptions: FilterOption[];
-  resultsCount: number;
 }
 
 export const SearchHeader: React.FC<SearchHeaderProps> = ({
@@ -28,7 +27,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
   showFilters,
   onToggleFilters,
   filterOptions,
-  resultsCount,
 }) => {
   const clearSearch = () => {
     onSearchChange("");
@@ -38,23 +36,23 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
     <View style={styles.container}>
       <Text style={styles.title}>Discover Masjids</Text>
 
-      <View style={styles.searchContainer}>
-        <Search size={20} color="#6B7280" style={styles.searchIcon} />
+      <View style={styles.searchContainer} className="bg-emerald/25 ">
+        <Search size={20} color="#181816" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search by name or location..."
           value={searchQuery}
           onChangeText={onSearchChange}
-          placeholderTextColor="#9CA3AF"
+          placeholderTextColor="#181816"
         />
         {searchQuery ? (
           <TouchableOpacity onPress={clearSearch} style={styles.clearButton}>
-            <X size={20} color="#6B7280" />
+            <X size={20} color="#181816" />
           </TouchableOpacity>
         ) : null}
       </View>
 
-      <View style={styles.filterHeader}>
+      {/* <View style={styles.filterHeader}>
         <TouchableOpacity
           onPress={onToggleFilters}
           style={[
@@ -101,7 +99,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
             </TouchableOpacity>
           ))}
         </View>
-      )}
+      )} */}
     </View>
   );
 };
@@ -109,9 +107,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#334155",
-    paddingTop: 16,
   },
   title: {
     fontSize: 24,
@@ -123,13 +118,10 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#334155",
     borderRadius: 12,
     paddingHorizontal: 12,
-    paddingVertical: 8,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: "#334155",
+    paddingVertical: 5,
+    marginBottom: 10,
   },
   searchIcon: {
     marginRight: 8,

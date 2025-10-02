@@ -134,6 +134,19 @@ export default function ProtectedLayout() {
         }}
       />
       <Stack.Screen
+        name="user/masjiddetails"
+        options={{
+          headerTitle: () => <HeaderTitle title="Masjid Details" />,
+          headerStyle: {
+            backgroundColor: "#2E7D32",
+          },
+          animation: "slide_from_right", // Slide in from the right
+          animationDuration: 300, // Duration in milliseconds
+          headerTintColor: "#fff",
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
         name="user/tasbih"
         options={{
           headerTitle: () => <HeaderTitle title="Tasbih" />,
